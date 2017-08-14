@@ -1,6 +1,6 @@
 /**
  * @module pptx-compose
- * @fileoverview Simple Open Office XML's pptx parser to JSON
+ * @fileoverview Composes Open Office XML pptx buffer to JSON and ecoding XML
  *
  * @author Shobhit Sharma <hi@shobh.it>
  */
@@ -16,13 +16,13 @@ var JSZip = require('jszip');
 var xml2js = require('xml2js');
 
 /**
- * @class Parser
+ * @class Composer
  *
  * @param options
- * @returns {Parser}
+ * @returns {Composer}
  * @constructor
  */
-function Parser(options) {
+function Composer(options) {
   this.options = options || {};
   return this;
 }
@@ -33,7 +33,7 @@ function Parser(options) {
  * @param files
  * @param callback
  */
-Parser.prototype.execute = function execute(files, callback) {
+Composer.prototype.execute = function execute(files, callback) {
   assert.ok(files instanceof Array, "argument 'files' must be an array");
   assert.equal(typeof callback, 'function', "argument 'callback' must be a function");
 
@@ -51,7 +51,7 @@ Parser.prototype.execute = function execute(files, callback) {
  * @param {string} file
  * @param {Function} callback
  */
-Parser.prototype.parse = function parse(file, callback) {
+Composer.prototype.parse = function parse(file, callback) {
   assert.equal(typeof file, 'string', "argument 'file' must be a string");
   assert.equal(typeof callback, 'function', "argument 'callback' must be a function");
 
@@ -97,7 +97,7 @@ Parser.prototype.parse = function parse(file, callback) {
  * @param xmls
  * @param callback
  */
-Parser.prototype.bufferize = function bufferize(xmls, options, callback) {
+Composer.prototype.bufferize = function bufferize(xmls, options, callback) {
   if (typeof options === 'function') {
     callback = options;
     options = {};
@@ -159,4 +159,4 @@ function uuid() {
   return primary + secondary;
 }
 
-module.exports = Parser;
+module.exports = Composer;
