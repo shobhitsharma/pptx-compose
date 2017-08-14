@@ -1,0 +1,33 @@
+{
+  "name": "pptx-compose",
+  "version": "0.1.0",
+  "description": "PPTX parser to JSON",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shobhitsharma/pptx-compose.git"
+  },
+  "keywords": [
+    "pptx",
+    "pptx-composer",
+    "pptx-json",
+    "pptx-xml",
+    "ppt",
+    "pptx-to-json",
+    "pptx-to-xml"
+  ],
+  "author": "Shobhit Sharma <ishobhitsharma@gmail.com> (https://shobh.it/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shobhitsharma/pptx-compose/issues"
+  },
+  "homepage": "https://github.com/shobhitsharma/pptx-compose#readme",
+  "dependencies": {
+    "async": "2.5.0",
+    "jszip": "3.1.3",
+    "xml2js": "0.4.18"
+  }
+}
