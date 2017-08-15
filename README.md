@@ -34,12 +34,15 @@ composer.parse('/path/to/pptx/file.pptx', function (err, json) {
 
 ### .bufferize()
 
-Converts generated JSON (via parse method) into buffer or file. The data array can be manipulated based on your requirements in case you need to add theme, slides or other xmls based on your requirements.
+Converts generated JSON (via parse method) into buffer or file. The data array can be manipulated based on your requirements in case you need to add theme, slides or other xml data.
 
 ```js
 var parsed_xmls = [xml1, xml2, xml3];
+var options = {
+  file: true // Returns a PPTX file. (`false` as default to return buffer)
+};
 
-composer.bufferize(parsed_xmls, options[object{}], callback[Function()])
+composer.bufferize(parsed_xmls, options, (err, data)=>{});
 ```
 
 ### .execute()
@@ -52,11 +55,7 @@ var files = [
   '/path/to/pptx/file2.pptx'
 ];
 
-var options = {
-  file: true // Returns a PPTX file. (`false` as default to return buffer)
-};
-
-composer.execute(files, options, function (err, results) {
+composer.execute(files, function (err, results) {
   console.log(results);
 });
 ```
