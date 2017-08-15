@@ -1,6 +1,6 @@
 {
   "name": "pptx-compose",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "PPTX parser to JSON",
   "main": "index.js",
   "scripts": {
