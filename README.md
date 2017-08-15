@@ -12,10 +12,10 @@ $ npm install pptx-compose
 ## Usage
 
 ```js
-var composer = require('pptx-compose');
+const composer = require('pptx-compose');
 
-// Parse a PPTX file
-composer.parse('/path/to/pptx/file.pptx', callback[Function()])
+// Parses a PPTX file
+composer.parse('/path/to/pptx/file.pptx', (err, content)=>{})
 ```
 
 ## Methods
@@ -34,18 +34,19 @@ composer.parse('/path/to/pptx/file.pptx', function (err, json) {
 
 ### .bufferize()
 
-Converts JSON (with PPTX XML) into buffer or file.
+Converts generated JSON (via parse method) into buffer or file. The data array can be manipulated based on your requirements in case you need to add theme, slides or other xmls based on your requirements.
 
 ```js
-composer.bufferize('/path/to/pptx/file.pptx', options[object{}], callback[Function()])
+var parsed_xmls = [xml1, xml2, xml3];
+
+composer.bufferize(parsed_xmls, options[object{}], callback[Function()])
 ```
 
 ### .execute()
 
-Executes parsing of multiple PPTX files and returning results as array
+Executes parsing of multiple PPTX files and returning results as array.
 
 ```js
-
 var files = [
   '/path/to/pptx/file1.pptx',
   '/path/to/pptx/file2.pptx'
@@ -59,3 +60,6 @@ composer.execute(files, options, function (err, results) {
   console.log(results);
 });
 ```
+
+## License
+MIT

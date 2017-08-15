@@ -30,8 +30,8 @@ function Composer(options) {
 /**
  * @method execute
  *
- * @param files
- * @param callback
+ * @param {Array} files
+ * @param {Function} callback
  */
 Composer.prototype.execute = function execute(files, callback) {
   assert.ok(files instanceof Array, "argument 'files' must be an array");
@@ -94,8 +94,10 @@ Composer.prototype.parse = function parse(file, callback) {
 /**
  * @method bufferize
  *
- * @param xmls
- * @param callback
+ * Converts parsed data into buffer or file
+ *
+ * @param {Array} xmls
+ * @param {Function} callback
  */
 Composer.prototype.bufferize = function bufferize(xmls, options, callback) {
   if (typeof options === 'function') {
@@ -108,7 +110,7 @@ Composer.prototype.bufferize = function bufferize(xmls, options, callback) {
   assert.equal(typeof options, 'object', "argument 'options' must be an object");
 
   var zip = new JSZip();
-  var output = path.join(os.tmpdir(), uuid.v4() + '.pptx');
+  var output = path.join(os.tmpdir(), uuid() + '.pptx');
 
   xmls.forEach(function (content) {
     for (var key in content) {
