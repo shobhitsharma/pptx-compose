@@ -59,13 +59,13 @@ Composer.prototype.parse = function parse(file, callback) {
     if (err) {
       return callback(err);
     }
-
     var content = {};
-    JSZip().loadAsync(data)
+
+    JSZip()
+      .loadAsync(data)
       .then(function (zip) {
         async.each(Object.keys(zip.files), function (key, cb) {
           var ext = key.substr(key.lastIndexOf('.'));
-
           if (ext === '.xml' || ext === '.rels') {
             zip.file(key).async('string')
               .then(function (xml) {
@@ -99,20 +99,20 @@ Composer.prototype.parse = function parse(file, callback) {
  * @param {Array} xmls
  * @param {Function} callback
  */
-Composer.prototype.bufferize = function bufferize(xmls, options, callback) {
+Composer.prototype.bufferize = function bufferize(content, options, callback) {
   if (typeof options === 'function') {
     callback = options;
     options = {};
   }
   options = options || {};
 
-  assert.ok(xmls instanceof Array, "argument 'xmls' must be an array");
+  assert.ok(typeof content, 'object', "argument 'content' must be an array");
   assert.equal(typeof options, 'object', "argument 'options' must be an object");
 
   var zip = new JSZip();
   var output = path.join(os.tmpdir(), uuid() + '.pptx');
 
-  xmls.forEach(function (content) {
+  Object.keys(content).forEach(function (content) {
     for (var key in content) {
       if (content.hasOwnProperty(key)) {
         var ext = key.substr(key.lastIndexOf('.'));
@@ -143,6 +143,46 @@ Composer.prototype.bufferize = function bufferize(xmls, options, callback) {
       });
     }
     callback(null, content);
+  });
+};
+
+/**
+ * @method toJSON
+ *
+ * Converts pptx contents to JSON
+ *
+ * @param {Array} file
+ * @param {options} options
+ * @param {Function} callback
+ */
+Composer.prototype.toJSON = function toJSON(file, options, callback) {
+  if (typeof options === 'function') {
+    callback = options;
+    options = {};
+  }
+  options = options || {};
+
+  assert.equal(typeof file, 'string', "argument 'file' must be a string");
+  var output_dir = path.join(__dirname, 'output');
+  var output = options.output || path.join(output_dir, uuid() + '.json');
+
+  if (!fs.existsSync(output_dir)) {
+    fs.mkdirSync(output_dir);
+  }
+
+  this.parse(file, function (err, json) {
+    if (err) {
+      return callback(err);
+    }
+    fs.writeFile(output, JSON.stringify(json, null, 2), {
+      encoding: 'utf8',
+      flag: 'wx'
+    }, function (err) {
+      if (err) {
+        return callback(err);
+      }
+      callback(null, output);
+    });
   });
 };
 

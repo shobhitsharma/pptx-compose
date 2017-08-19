@@ -18,6 +18,14 @@ const composer = require('pptx-compose');
 composer.parse('/path/to/pptx/file.pptx', (err, content)=>{})
 ```
 
+## CLI
+
+Composer is able to generate JSON from PPTX source and saves result to `./output` directory, run:
+
+```bash
+$ node bin/convert ./path/to/my/pptx
+```
+
 ## Methods
 
 PPTX Composer has following built-in methods:

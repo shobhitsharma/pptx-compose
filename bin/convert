@@ -1,0 +1,33 @@
+#!/usr/bin/env node
+
+'use strict';
+
+var program = require('commander');
+var pkg = require('../package');
+var Composer = require('../index');
+
+program
+  .usage('[options] <input> <output>')
+  .version(pkg.version)
+  .option('-i, --input', 'PPTX File')
+  .option('-o, --output', 'Output JSON file (optional)')
+  .parse(process.argv);
+
+if (!program.args || !program.args[0]) {
+  program.help();
+}
+console.log('>>>>', program.args)
+var input = program.args[0];
+var output = program.args[1];
+var compose = new Composer();
+
+compose.toJSON(input, {
+  output: output
+}, function (err, output) {
+  if (err) {
+    console.error(err);
+    return process.exit();
+  }
+  console.log('Results saved at:', output);
+  process.exit();
+});
