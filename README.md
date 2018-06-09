@@ -12,7 +12,9 @@ $ npm install pptx-compose
 ## Usage
 
 ```js
-const composer = require('pptx-compose');
+const pptComposer = require('pptx-compose');
+
+let composer = new pptComposer(); //instantiate
 
 // Parses a PPTX file
 composer.parse('/path/to/pptx/file.pptx', (err, content)=>{})
