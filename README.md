@@ -2,7 +2,6 @@
 
 > Parses Open Office XML generated PPTX to JSON
 
-
 ## Install
 
 ```
@@ -12,12 +11,12 @@ $ npm install pptx-compose
 ## Usage
 
 ```js
-const pptComposer = require('pptx-compose');
+const Composer = require("pptx-compose");
 
-let composer = new pptComposer(); //instantiate
+let composer = new Composer(); //instantiate
 
 // Parses a PPTX file
-composer.parse('/path/to/pptx/file.pptx', (err, content)=>{})
+composer.parse("/path/to/pptx/file.pptx", (err, content) => {});
 ```
 
 ## CLI
@@ -37,7 +36,7 @@ PPTX Composer has following built-in methods:
 Parse a single PPTX file.
 
 ```js
-composer.parse('/path/to/pptx/file.pptx', function (err, json) {
+composer.parse("/path/to/pptx/file.pptx", function (err, json) {
   console.log(JSON.stringify(json, null, 2));
 });
 ```
@@ -49,10 +48,10 @@ Converts generated JSON (via parse method) into buffer or file. The data array c
 ```js
 var parsed_xmls = [xml1, xml2, xml3];
 var options = {
-  file: true // Returns a PPTX file. (`false` as default to return buffer)
+  file: true, // Returns a PPTX file. (`false` as default to return buffer)
 };
 
-composer.bufferize(parsed_xmls, options, (err, data)=>{});
+composer.bufferize(parsed_xmls, options, (err, data) => {});
 ```
 
 ### .execute()
@@ -60,10 +59,7 @@ composer.bufferize(parsed_xmls, options, (err, data)=>{});
 Executes parsing of multiple PPTX files and returning results as array.
 
 ```js
-var files = [
-  '/path/to/pptx/file1.pptx',
-  '/path/to/pptx/file2.pptx'
-];
+var files = ["/path/to/pptx/file1.pptx", "/path/to/pptx/file2.pptx"];
 
 composer.execute(files, function (err, results) {
   console.log(results);
@@ -71,4 +67,5 @@ composer.execute(files, function (err, results) {
 ```
 
 ## License
+
 MIT
