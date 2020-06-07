@@ -1,6 +1,5 @@
 name: Pull Request
-on:
-  pull_request
+on: pull_request
 
 jobs:
   build:
@@ -25,7 +24,7 @@ jobs:
 
       # run tests
       - name: Run tests
-      run: npm run test
+        run: npm run test
 
       # build lib
       - name: Build library
