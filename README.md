@@ -39,10 +39,10 @@ $ node bin/convert ./path/to/my.pptx path/to/your/directory/generated.json
 
 ## Options
 
-| attribute             |                                                 type                                                  |      default |
-| --------------------- | :---------------------------------------------------------------------------------------------------: | -----------: |
-| **jszipBinary**       | `"nodebuffer" | "base64" | "text" | "binarystring" | "array" | "uint8array" | "arraybuffer" | "blob"` | `nodebuffer` |
-| **jszipGenerateType** | `"nodebuffer" | "base64" | "text" | "binarystring" | "array" | "uint8array" | "arraybuffer" | "blob"` | `nodebuffer` |
+| attribute             |                                              type                                              |      default |
+| --------------------- | :--------------------------------------------------------------------------------------------: | -----------: |
+| **jszipBinary**       | `"nodebuffer"/ "base64"/ "text"/ "binarystring"/ "array"/ "uint8array"/ "arraybuffer"/ "blob"` | `nodebuffer` |
+| **jszipGenerateType** | `"nodebuffer"/ "base64"/ "text"/ "binarystring"/ "array"/ "uint8array"/ "arraybuffer"/ "blob"` | `nodebuffer` |
 
 ## Methods
 
