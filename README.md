@@ -1,6 +1,6 @@
 # pptx-compose
 
-![Node.js CI](https://github.com/shobhitsharma/pptx-compose/workflows/build/badge.svg?branch=master)
+[![Actions Status](https://github.com/shobhitsharma/pptx-compose/workflows/release/badge.svg)](https://github.com/shobhitsharma/pptx-compose/actions)
 ![npm](https://img.shields.io/npm/v/npm)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
