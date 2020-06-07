@@ -17,6 +17,7 @@ $ npm install pptx-compose
 ```js
 import PPTXCompose from "pptx-compose";
 
+// Initialize repo
 const composer = new PPTXCompose(options);
 
 // Parses a PPTX file to JSON
