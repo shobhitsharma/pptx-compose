@@ -1,7 +1,6 @@
 {
   "useTabs": false,
   "tabWidth": 2,
-  "bracketSpacing": false,
   "printWidth": 120,
   "semi": true
 }

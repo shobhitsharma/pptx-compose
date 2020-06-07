@@ -1,33 +1,34 @@
 #!/usr/bin/env node
 
-'use strict';
+"use strict";
 
-var program = require('commander');
-var pkg = require('../package');
-var Composer = require('../index');
+const program = require("commander");
+const pkg = require("../package");
+const Composer = require("../lib/index.js").default;
 
 program
-  .usage('[options] <input> <output>')
+  .usage("[options] <input> <output>")
   .version(pkg.version)
-  .option('-i, --input', 'PPTX File')
-  .option('-o, --output', 'Output JSON file (optional)')
+  .option("-i, --input", "PPTX File")
+  .option("-o, --output", "Output JSON file (optional)")
   .parse(process.argv);
 
 if (!program.args || !program.args[0]) {
   program.help();
 }
-console.log('>>>>', program.args)
-var input = program.args[0];
-var output = program.args[1];
-var compose = new Composer();
 
-compose.toJSON(input, {
-  output: output
-}, function (err, output) {
-  if (err) {
+const input = program.args[0];
+const output = program.args[1];
+
+const composer = new Composer();
+
+composer
+  .toJSON(input, { output: output })
+  .then((output) => {
+    console.log("Results saved at:", output);
+    process.exit();
+  })
+  .catch((err) => {
     console.error(err);
-    return process.exit();
-  }
-  console.log('Results saved at:', output);
-  process.exit();
-});
+    process.exit();
+  });
