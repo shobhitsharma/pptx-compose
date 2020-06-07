@@ -48,7 +48,7 @@ $ node bin/convert ./path/to/my.pptx path/to/your/directory/generated.json
 
 PPTX Composer has following built-in methods:
 
-### .toJSON(`<pptx_file_path>`, `<options{Options & { output: string }}>`)
+### `.toJSON(<pptx_file_path>, <options{Options & { output: string }}>)`
 
 Parse PowerPoint file to JSON.
 
@@ -64,7 +64,7 @@ composer.toJSON("/path/to/my.pptx", {
 });
 ```
 
-### .toPPTX(`<json>`, `<options{Options & { output: string }}>`)
+### `.toPPTX(<json>, <options{Options & { output: string }}>)`
 
 Convert JSON file to PPTX.
 
