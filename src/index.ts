@@ -5,170 +5,93 @@
  * @author Shobhit Sharma <hi@shobh.it>
  */
 
-import fs from "fs";
-import os from "os";
 import path from "path";
-import async from "async";
 import JSZip from "jszip";
-import xml2js from "xml2js";
-import {uuid} from "./utils";
+import { promises as fs, existsSync, mkdirSync } from "fs";
+import { jszip2json, json2jszip } from "./parser";
 
-type Options = {};
+import type { ComposerOptions, OutputJSON, OutputOptions } from "./types";
 
-class Composer {
-  private options: Options;
-
-  constructor(options?: Options) {
-    this.options = options || {};
-  }
+export interface IComposer {
+  /**
+   * Converts PPTX file input to JSON output
+   */
+  toJSON: (file: string, options?: OutputOptions) => {};
 
   /**
-   * @method execute
-   *
-   * @param {Array} files
-   * @param {Function} callback
+   * Converts JSON input to PPTX output
    */
-  public execute(files: string[], callback: Function) {
-    async.map(files, this.parse, (err, results: any) => {
-      if (err) {
-        return callback(err);
-      }
-      this.bufferize(results, {}, callback);
-    });
+  toPPTX: (json: Object, options?: OutputOptions) => {};
+}
+
+class Composer implements IComposer {
+  private options: ComposerOptions = {
+    jszipBinary: "nodebuffer",
+    jszipGenerateType: "nodebuffer",
+  };
+
+  constructor(options?: ComposerOptions) {
+    if (options) {
+      this.options = options;
+    }
   }
 
-  /**
-   * @method parse
-   *
-   * @param {string} file
-   * @param {Function} callback
-   */
-  public parse(file: string, callback: Function) {
-    fs.readFile(file, (err, data) => {
-      if (err) {
-        return callback(err);
+  private async generateFile(content: string | Uint8Array, extension?: string, outputPath?: string) {
+    if (!outputPath) {
+      const outputDir = path.join(__dirname, "output");
+      if (!existsSync(outputDir)) {
+        mkdirSync(outputDir);
       }
-
-      const content: {[key: string]: any} = {};
-
-      JSZip()
-        .loadAsync(data)
-        .then((zip) => {
-          const zipper = (key: string, cb: async.ErrorCallback<Error>) => {
-            const ext = key.substr(key.lastIndexOf("."));
-            if (ext === ".xml" || ext === ".rels") {
-              zip
-                .file(key)
-                .async("binarystring")
-                .then((xml) => {
-                  xml2js.parseString(xml, (err: Error, json) => {
-                    if (err) {
-                      return cb(err);
-                    }
-                    content[key] = json;
-                    cb(null);
-                  });
-                });
-            } else {
-              content[key] = zip.file(key).async("binarystring");
-              cb(null);
-            }
-          };
-
-          async.each(Object.keys(zip.files), zipper, (err) => {
-            if (err) {
-              return callback(err);
-            }
-            callback(null, content);
-          });
-        });
-    });
-  }
-
-  /**
-   * @method bufferize
-   *
-   * Converts parsed data into buffer or file
-   *
-   * @param {Array} xmls
-   * @param {Function} callback
-   */
-  public bufferize(contents: {[key: string]: any}, options: {file?: boolean}, callback: Function) {
-    const zip = new JSZip();
-    const output = path.join(os.tmpdir(), uuid() + ".pptx");
-
-    Object.keys(contents).forEach(() => {
-      for (let key in contents) {
-        if (contents.hasOwnProperty(key)) {
-          const ext = key.substr(key.lastIndexOf("."));
-          if (ext === ".xml" || ext === ".rels") {
-            const builder = new xml2js.Builder({
-              renderOpts: {
-                pretty: false,
-              },
-            });
-            const xml2 = builder.buildObject(contents[key]);
-            zip.file(key, xml2);
-          } else {
-            zip.file(key, contents[key]);
-          }
-        }
-      }
-    });
-
-    zip
-      .generateAsync({
-        type: "nodebuffer",
-      })
-      .then((content) => {
-        if (options.file) {
-          return fs.writeFile(output, content, (err) => {
-            if (err) {
-              return callback(err);
-            }
-            callback(null, output);
-          });
-        }
-        callback(null, content);
-      });
+      outputPath = path.join(outputDir, `${Date.now()}.${extension || "pptx"}`);
+    }
+    return await fs.writeFile(outputPath, content);
   }
 
   /**
    * @method toJSON
    *
-   * Converts pptx contents to JSON
+   * Parse PowerPoint file to JSON.
    *
-   * @param {Array} file
-   * @param {options} options
-   * @param {Function} callback
+   * @param {string} file Give a path of PowerPoint file.
+   * @param {OutputOptions} options
+   * @returns {Promise<OutputJSON>} json
    */
-  public toJSON(file: string, options: {output?: string}, callback: Function) {
-    const output_dir = path.join(__dirname, "output");
-    const output = options.output || path.join(output_dir, uuid() + ".json");
+  public async toJSON(file: string, options?: OutputOptions) {
+    options = Object.assign({}, this.options, options);
 
-    if (!fs.existsSync(output_dir)) {
-      fs.mkdirSync(output_dir);
+    const fileBuffer = await fs.readFile(path.resolve(__dirname, file));
+    const zip = await JSZip().loadAsync(fileBuffer);
+    const jsonOutput = await jszip2json(zip, options);
+
+    if (options.output) {
+      return this.generateFile(JSON.stringify(jsonOutput, null, 2), "json", options.output);
     }
 
-    this.parse(file, (err: Error, json: Object) => {
-      if (err) {
-        return callback(err);
-      }
-      fs.writeFile(
-        output,
-        JSON.stringify(json, null, 2),
-        {
-          encoding: "utf8",
-          flag: "wx",
-        },
-        (err) => {
-          if (err) {
-            return callback(err);
-          }
-          callback(null, output);
-        }
-      );
+    return jsonOutput;
+  }
+
+  /**
+   * @method toPPTX
+   *
+   * Convert JSON to PPTX.
+   *
+   * @param {OutputJSON} json created from PowerPoint XMLs
+   * @param {OutputOptions} options
+   * @returns {Promise<Buffer|File>}
+   */
+  public async toPPTX(json: OutputJSON, options?: OutputOptions) {
+    options = Object.assign({}, this.options, options);
+
+    const zip = await json2jszip(json, options);
+    const contentBuffer = await zip.generateAsync({
+      type: this.options.jszipGenerateType || "nodebuffer",
     });
+
+    if (!options.output) {
+      return contentBuffer;
+    }
+
+    return this.generateFile(contentBuffer as string, "pptx", options.output);
   }
 }
 

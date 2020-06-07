@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node",
-    "target": "esnext",
+    "target": "es6",
     "module": "commonjs",
-    "lib": ["dom", "esnext"],
+    "moduleResolution": "node",
     "strict": true,
     "sourceMap": true,
+    "allowJs": false,
     "declaration": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -16,5 +16,5 @@
     "typeRoots": ["node_modules/@types", "@types"]
   },
   "include": ["src/**.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "__tests__/**/*"]
 }
