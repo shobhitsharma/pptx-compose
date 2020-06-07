@@ -8,6 +8,8 @@
 $ npm install pptx-compose
 ```
 
+See [changelog here](https://github.com/shobhitsharma/pptx-compose/releases) for API updates and compatibility issues.
+
 ## Usage
 
 ```js
