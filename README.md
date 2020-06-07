@@ -1,4 +1,8 @@
-# pptx-compose [![Build Status](https://travis-ci.org/shobhitsharma/pptx-compose.svg?branch=master)](https://travis-ci.org/shobhitsharma/pptx-compose) [![Greenkeeper badge](https://badges.greenkeeper.io/shobhitsharma/pptx-compose.svg)](https://greenkeeper.io/)
+# pptx-compose
+
+![Node.js CI](https://github.com/shobhitsharma/pptx-compose/workflows/build/badge.svg?branch=master)
+![npm](https://img.shields.io/npm/v/npm)
+[![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
 > Parses Open Office XML generated PPTX to JSON
 
