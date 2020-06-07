@@ -4,7 +4,7 @@
 
 const program = require("commander");
 const pkg = require("../package");
-const Composer = require("../dist/index.js").default;
+const Composer = require("../lib/index.js").default;
 
 program
   .usage("[options] <input> <output>")

@@ -24,14 +24,17 @@ const json = await composer.toPPTX("/path/to/my.json");
 
 ## CLI
 
-Composer is able to generate JSON from PPTX source and saves result to `./output` directory, run:
+Composer is able to generate JSON from PPTX source directly from CLI, run:
 
 ```bash
-# Build library
-$ npm run build
+# Usage: convert [options] <input> <output>
+# Options:
+#   -V, --version  output the version number
+#   -i, --input    PPTX File
+#   -o, --output   Output JSON file (optional)
+#   -h, --help     display help for command
 
-# Run CLI with Options
-$ node bin/convert ./path/to/my/pptx
+$ node bin/convert ./path/to/my.pptx path/to/your/directory/generated.json
 ```
 
 ## Options

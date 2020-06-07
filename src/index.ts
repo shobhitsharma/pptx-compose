@@ -36,17 +36,6 @@ class Composer implements IComposer {
     }
   }
 
-  private async generateFile(content: string | Uint8Array, extension?: string, outputPath?: string) {
-    if (!outputPath) {
-      const outputDir = path.join(__dirname, "output");
-      if (!existsSync(outputDir)) {
-        mkdirSync(outputDir);
-      }
-      outputPath = path.join(outputDir, `${Date.now()}.${extension || "pptx"}`);
-    }
-    return await fs.writeFile(outputPath, content);
-  }
-
   /**
    * @method toJSON
    *
@@ -64,7 +53,7 @@ class Composer implements IComposer {
     const jsonOutput = await jszip2json(zip, options);
 
     if (options.output) {
-      return this.generateFile(JSON.stringify(jsonOutput, null, 2), "json", options.output);
+      return await fs.writeFile(options.output, JSON.stringify(jsonOutput, null, 2));
     }
 
     return jsonOutput;
@@ -87,11 +76,11 @@ class Composer implements IComposer {
       type: this.options.jszipGenerateType || "nodebuffer",
     });
 
-    if (!options.output) {
-      return contentBuffer;
+    if (options.output) {
+      return await fs.writeFile(options.output, contentBuffer as string);
     }
 
-    return this.generateFile(contentBuffer as string, "pptx", options.output);
+    return contentBuffer;
   }
 }
 
