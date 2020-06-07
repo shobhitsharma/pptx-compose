@@ -11,14 +11,14 @@ const sampleMedia = path.join(__dirname, "./fixtures/sample.jpg");
 const sampleZip = path.join(__dirname, "./fixtures/sample.zip");
 
 describe("PPTX Compose", () => {
-  test("should give valid pptx object, toJSON returns valid json.", async () => {
+  test("should give valid pptx object, toJSON returns valid json", async () => {
     const composer = new PPTXComposer();
     const json = (await composer.toJSON(samplePPTX)) as OutputJSON;
 
     expect("ppt/presentation.xml" in json).toBe(true);
   });
 
-  test("should give valid pptx object, call toJSON and then call toPPTX return valid pptx.", async () => {
+  test("should give valid pptx object, call toJSON and then call toPPTX return valid pptx", async () => {
     const composer = new PPTXComposer();
     const json = (await composer.toJSON(samplePPTX)) as OutputJSON;
     const pptx = await composer.toPPTX(json);
@@ -26,7 +26,7 @@ describe("PPTX Compose", () => {
     expect(pptx).toEqual(expect.anything());
   });
 
-  test("should give valid pptx object, call toJSON and add jpeg, then call toPPTX return valid pptx.", async () => {
+  test("should give valid pptx object, call toJSON and add jpeg, then call toPPTX return valid pptx", async () => {
     const composer = new PPTXComposer();
     const json = (await composer.toJSON(samplePPTX)) as OutputJSON;
 
@@ -38,7 +38,7 @@ describe("PPTX Compose", () => {
     expect(pptx).toEqual(expect.anything());
   });
 
-  test("should give valid zip object, jszip2json returns valid json.", async () => {
+  test("should give valid zip object, jszip2json returns valid json", async () => {
     const buff = fs.readFileSync(sampleZip);
     const zip = await JSZip().loadAsync(buff);
 
