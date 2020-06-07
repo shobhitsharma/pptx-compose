@@ -2,8 +2,8 @@ name: Pull Request
 on: pull_request
 
 jobs:
-  pull_request:
-    name: Build and test
+  build:
+    name: PR Checker
     runs-on: ubuntu-18.04
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
